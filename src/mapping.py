@@ -25,9 +25,9 @@ class Draw_map():
             print(waypoint[1])
             print(waypoint[-1])
             print(dst)
-            if dst < 0.5:
+            if dst < 0.5: 
+                waypoint = np.delete(waypoint[0])
                 np.save('/home/macaron/catkin_ws/src/menguiin/path/test', waypoint)
-                np.savetext('/home/macaron/catkin_ws/src/menguiin/path/test.txt', waypoint, fmt='%d', delimeter=',', header='test')
                 print('done!')
                 plt.plot(waypoint[:, 0], waypoint[:, 1])
                 plt.show()
