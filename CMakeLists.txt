@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(menguiin)
+project(waypoint)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -107,7 +107,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES menguiin
+#  LIBRARIES waypoint
 #  CATKIN_DEPENDS message_generation roscpp rospy sensor_msgs serial std_msgs
 #  DEPENDS system_lib
 )
@@ -153,8 +153,8 @@ include_directories(
 #   ${catkin_LIBRARIES}
 # )
 
- add_executable(menguiin src/serial_node.cpp)
- target_link_libraries(menguiin
+ add_executable(waypoint src/serial_node.cpp)
+ target_link_libraries(waypoint
    ${catkin_LIBRARIES}
  )
 

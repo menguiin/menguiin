@@ -1,22 +1,18 @@
  
 #include <ros/ros.h>
 #include <serial/serial.h>
-#include <menguiin/erp42_read.h>
-#include <menguiin/erp42_write.h>
+#include <waypoint/erp42_read.h>
+#include <waypoint/erp42_write.h>
 
-#define PI acos(-1)
 #define MAX 18
 //sudo chmod 766 /dev/ttyUSBn : give a right to execute, write, read
 serial::Serial ser;
 //전역 변수 선언
-double t_desire = 3; //sec, integer, you should change array size also
 bool E_stop;
 uint8_t steer1,steer2,speed,speed1,brake,gear;
 uint8_t steer1_save = 0x00;
 uint8_t steer2_save = 0x00;
 uint8_t speed1_save = 0x00;
-double ENC_saver[4];
-double vel_saver[4];
 double dt = 0;
 double wheel_base = 1.040, tread = 0.985, width = 1.160;
 int steer = 0;
@@ -24,7 +20,7 @@ int inputbool = 0;
 
 
 //콜백 함수 선언
-void writeCallback(const menguiin::erp42_write::ConstPtr& write)
+void writeCallback(const waypoint::erp42_write::ConstPtr& write)
 {
     inputbool = 1;
     E_stop=write->write_E_stop;
@@ -42,10 +38,10 @@ int main(int argc, char **argv)
     //ROS setting
     ros::init(argc, argv, "serial_node");
     ros::NodeHandle nh;
-    ros::Publisher  serial_pub = nh.advertise<menguiin::erp42_read>("erp42_read", 1);
+    ros::Publisher  serial_pub = nh.advertise<waypoint::erp42_read>("erp42_read", 1);
     ros::Subscriber serial_sub = nh.subscribe("erp42_write", 1, writeCallback);
     ros::Rate loop_rate(50);
-    menguiin::erp42_read erp42_state;
+    waypoint::erp42_read erp42_state;
     //serial setting
     try
     {
@@ -100,10 +96,6 @@ int main(int argc, char **argv)
             erp42_state.read_speed=int(PCU_to_UPPER[5]);
             erp42_state.read_brake=int(PCU_to_UPPER[9]);
             erp42_state.read_ENC=int(PCU_to_UPPER[13])*256*256*256+int(PCU_to_UPPER[12])*256*256+int(PCU_to_UPPER[11])*256+int(PCU_to_UPPER[10]);
-            ENC_saver[0]=erp42_state.read_ENC;
-            ENC_saver[1]=erp42_state.read_ENC;
-            ENC_saver[2]=erp42_state.read_ENC;
-            ENC_saver[3]=erp42_state.read_ENC;
         }
     }
 
